@@ -32,7 +32,7 @@ const coercionWarn = (type: string, value: string) => {
   }
 }
 
-const COERCION_FUNCTIONS = {
+export const COERCION_FUNCTIONS = {
   Boolean: (value: string) => !!value,
   Float: (value: string) => {
     const val = parseFloat(value)
@@ -50,11 +50,11 @@ const COERCION_FUNCTIONS = {
     }
     return val
   },
-  Json: (value: string) => {
+  JSON: (value: string) => {
     try {
       return JSON.parse(value)
     } catch (e) {
-      coercionWarn('Json', value)
+      coercionWarn('JSON', value)
       return undefined
     }
   },
@@ -70,11 +70,20 @@ const COERCION_FUNCTIONS = {
 
 export type TDefinedCoercionFunctions = keyof typeof COERCION_FUNCTIONS
 
-const inputTypeToDataTypeMapping: Record<string, TDefinedCoercionFunctions> = {
+export const inputTypeToDataTypeMapping: Record<
+  string,
+  TDefinedCoercionFunctions
+> = {
   checkbox: 'Boolean',
   number: 'Int',
   date: 'DateTime',
   'datetime-local': 'DateTime',
+}
+
+export const valueAsProps: Record<string, TDefinedCoercionFunctions> = {
+  valueAsBoolean: 'Boolean',
+  valueAsJSON: 'JSON',
+  valueAsFloat: 'Float',
 }
 
 export const useCoercion = () => {
